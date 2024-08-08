@@ -1,4 +1,13 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const Input = styled.input`
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`;
 
 interface SearchBarProps {
   searchQuery: string;
@@ -10,14 +19,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChange }) =>
     onSearchChange(event.target.value);
   };
 
-  return (
-    <input
-      type="text"
-      placeholder="Search for a module"
-      value={searchQuery}
-      onChange={handleChange}
-    />
-  );
+  return <Input type="text" placeholder="Search for a module" value={searchQuery} onChange={handleChange} />;
 };
 
 export default SearchBar;

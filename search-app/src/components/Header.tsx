@@ -1,10 +1,18 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const HeaderContainer = styled.header`
+  padding: 20px;
+  background-color: #282c34;
+  color: white;
+  text-align: center;
+`;
 
 const Header: React.FC = () => {
   return (
-    <header>
-      <h1>Header</h1>
-    </header>
+    <HeaderContainer>
+      <h1>Modules List</h1>
+    </HeaderContainer>
   );
 };
 

@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import ModuleList from './components/ModuleList';
-import Pagination from './components/Pagination';
+import styled from 'styled-components';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import Footer from './components/Footer';
 import SearchBar from './components/SearchBar';
 import SortButtons from './components/SortButtons';
-import Sidebar from './components/Sidebar';
+import ModuleList from './components/ModuleList';
+import Pagination from './components/Pagination';
 
 
 interface Module {
@@ -13,7 +16,23 @@ interface Module {
   stars: number;
 }
 
-const Home: React.FC = () => {
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex: 1;
+`;
+
+const MainContent = styled.div`
+  flex: 1;
+  padding: 20px;
+`;
+
+const LibrariesList: React.FC = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,12 +68,12 @@ const Home: React.FC = () => {
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    setPage(1);
+    setPage(1); // Reset to first page on search
   };
 
   const handleSortChange = (field: string) => {
     setSortField(field);
-    setPage(1);
+    setPage(1); // Reset to first page on sort change
   };
 
   const startIndex = useMemo(() => (page - 1) * resultsPerPage, [page, resultsPerPage]);
@@ -62,19 +81,24 @@ const Home: React.FC = () => {
   const currentModules = useMemo(() => modules.slice(startIndex, endIndex), [modules, startIndex, endIndex]);
 
   return (
-    <div>
-      <h1>Modules List</h1>
-      <Sidebar />
-      <SearchBar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
-      <SortButtons onSortChange={handleSortChange} />
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <ModuleList modules={currentModules} />
-      )}
-      <Pagination totalPages={totalPages} currentPage={page} onPageChange={handlePageChange} />
-    </div>
+    <PageContainer>
+      <Header />
+      <ContentContainer>
+        <Sidebar />
+        <MainContent>
+          <SearchBar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
+          <SortButtons onSortChange={handleSortChange} />
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <ModuleList modules={currentModules} />
+          )}
+          <Pagination totalPages={totalPages} currentPage={page} onPageChange={handlePageChange} />
+        </MainContent>
+      </ContentContainer>
+      <Footer />
+    </PageContainer>
   );
 };
 
-export default Home;
+export default LibrariesList;

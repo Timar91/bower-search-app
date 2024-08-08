@@ -23,8 +23,7 @@ Before you begin, ensure you have met the following requirements:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/bower-search-app.git
-    Replace <your-username> with your own GitHub username.
+    git clone
     ```
 
 2. Navigate to the project directory:

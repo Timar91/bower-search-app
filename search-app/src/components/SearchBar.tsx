@@ -7,6 +7,11 @@ const Input = styled.input`
   margin-bottom: 20px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  @media (max-width: 768px) {
+    padding: 8px;
+    font-size: 0.6em;
+    width: 77%;
+  }
 `;
 
 interface SearchBarProps {

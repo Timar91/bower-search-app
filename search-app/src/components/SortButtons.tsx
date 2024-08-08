@@ -11,6 +11,10 @@ const Button = styled.button`
   &:hover {
     background-color: #e0e0e0;
   }
+  @media (max-width: 768px) {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
 `;
 
 interface SortButtonsProps {

@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
-import Footer from './components/Footer';
-import SearchBar from './components/SearchBar';
-import SortButtons from './components/SortButtons';
-import ModuleList from './components/ModuleList';
-import Pagination from './components/Pagination';
-
+import Header from './Header';
+import Sidebar from './Sidebar';
+import Footer from './Footer';
+import SearchBar from './SearchBar';
+import SortButtons from './SortButtons';
+import ModuleList from './ModuleList';
+import Pagination from './Pagination';
 
 interface Module {
   repository_id: string;
@@ -25,11 +24,19 @@ const PageContainer = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   flex: 1;
+  padding: 20px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 10px 0;
+  }
 `;
 
 const MainContent = styled.div`
   flex: 1;
   padding: 20px;
+  @media (max-width: 768px) {
+    padding: 10px 0;
+  }
 `;
 
 const LibrariesList: React.FC = () => {
@@ -39,6 +46,8 @@ const LibrariesList: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>('react');
   const [sortField, setSortField] = useState<string>('stars');
+  const [error, setError] = useState<string | null>(null);
+
   const apiKey = '89b9b269a559e361095973dbcdd3ca86';
   const resultsPerPage = 5;
   const totalItemsToFetch = 20;
@@ -46,14 +55,19 @@ const LibrariesList: React.FC = () => {
   useEffect(() => {
     const fetchModules = async () => {
       setLoading(true);
+      setError(null);
       try {
         const response = await fetch(
           `https://libraries.io/api/search?q=${searchQuery}&sort=${sortField}&order=desc&api_key=${apiKey}&per_page=${totalItemsToFetch}&page=1`
         );
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
         setModules(data);
         setTotalPages(Math.ceil(data.length / resultsPerPage));
       } catch (error) {
+        setError('Error fetching data');
         console.error('Error fetching data:', error);
       }
       setLoading(false);
@@ -90,6 +104,8 @@ const LibrariesList: React.FC = () => {
           <SortButtons onSortChange={handleSortChange} />
           {loading ? (
             <p>Loading...</p>
+          ) : error ? (
+            <p>{error}</p>
           ) : (
             <ModuleList modules={currentModules} />
           )}
